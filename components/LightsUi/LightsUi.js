@@ -17,7 +17,6 @@ import { textAlign } from '@material-ui/system';
 import Switch from '../../js/Switch';
 
 import cogoToast from 'cogo-toast';
-import SwitchComponent from './SwitchComponent';
 
 
 const UiTableWithStyles = ({data_lights, data_switch ,socket,  endpoint}) => {
@@ -92,33 +91,13 @@ const handleToggleLight = (event, name) => {
       <Grid container  spacing={2} justify="center" className={classes.light_container}>
           { dbSwitchData ? //&& dbSwitchData.error != 1 ?
               <>
-              { dbSwitchData.map((_switch, i)=>{
-                  //Return a component for each switch
-                  var lights = data_lights.filter((item, i)=> _switch.id == item.switch_id);
-
-                  return(<SwitchComponent type={_switch.type} array_index={_switch.array_index} id={_switch.id} name={_switch.name} description={_switch.description}
-                                      lights={lights} data_switch={data_switch[_switch.array_index]} handleToggleLight={handleToggleLight}/>);
-                  
-                }
-              )}
+              
               
               </>
             : <>No Data</>
           }
 
-          {/* { data_lights.length > 0 && data_switch.length > 0 ? //&& data_lights.error != 1 ?
-              <>
-              { data_lights.map((light, i)=>(
-                <div className={classes.light_div}>
-                <span className={light.value == 1 ? classes.light_label_on :classes.light_label_off}>Light {`${i+1}`}</span>
-                <Button size="small" className={classes.toggle_button} onClick={event=> handleToggleLight(event, light.array_index)}>Toggle</Button>
-              </div>
-              ))}
-              
-              </>
-            : <>No Data</>
-          } */}
-          </Grid>     
+      </Grid>     
 
 
     </Paper>

@@ -1,0 +1,46 @@
+Heartbeats
+
+C++
+Takes in 0/1s and will send UI the current bpm, which will be updated 5 times a second.
+
+NextJS
+Recieve BPM which will drive the tempo and how long each screen will last
+
+Home Page:
+ List of songs
+
+
+===Database Tables:============
+ Songs: id, name, description, initial_bpm, date_created
+ Sections: id, name, description, song_id, bars(how long to play), index(for order, not unique),
+ Chords: id, name, section_id, index(order), beats(how long to play)       //1 row for each chord, multiple rows per section
+ Scales: id, name, section_id, index(order)       // 1 row for each scale, multple rows per section
+ 	-- This may not need to be saved, could be fetched to NodeJs,computed, and sent back
+ 
+
+Look at the library and figure out what it sends me,
+
+===Song Builder Component =====
+ Add/Remove/Edit Section
+ Organize Sections
+
+===Section Builder Component ==
+ Add/Remove/Edit chords
+ Suggest Chords based on Key and Existing chords
+ Preview section we know how long each chord should display (just display all chords in beginning)
+
+===Play Song Component ========
+ Timer(min) / BPM to know when to switch chords, then sections 
+ Display Chords according to Timer 
+ Display BPM
+ Display Scale Possiblities according to chords & key
+
+ ex: 
+ BPM= 120 / 2 BPS
+ 1st section: 4 bars (16 beats) //changes after 8 seconds     if(timer >= ((bars*beats_per_bar)/ BPS)){next section} 
+ chords for 1st section: A B C# G
+
+=== Ideas: ==================== 
+Update based on timer not BPM
+Make it work with or without BPM
+Metronome count in (visually and audio if possible)

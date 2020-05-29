@@ -25,6 +25,30 @@ const UiTableWithStyles = ({data_lights, data_switch ,socket,  endpoint}) => {
   const [dbSwitchData, setDbSwitchData] = useState(null);
   const [dbLightData, setDbLightData] = useState(null);
 
+  const [ seconds, setSeconds ] = useState(0);
+  const [ minutes, setMinutes ] = useState(0);
+  
+  useEffect(() => {
+    const myInterval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds((seconds) => seconds + 1);
+      }
+      if (seconds === 0) {
+        if (minutes === 0) {
+          clearInterval(myInterval);
+        } 
+        else {
+          setMinutes((minutes) => minutes + 1);
+          setSeconds(59);
+        }
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(myInterval);
+    };
+  });
+
   //only works inside a functional component
   const classes = useStyles();
 
@@ -85,7 +109,9 @@ const handleToggleLight = (event, name) => {
     <Paper classes={{root:classes.root}} className={classes.root}>
       
       <Grid container  spacing={2} justify="center" className={classes.container}>
-        
+      <Text>
+        {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+      </Text>
       </Grid>
       
       <Grid container  spacing={2} justify="center" className={classes.light_container}>

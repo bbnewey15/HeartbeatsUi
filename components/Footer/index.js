@@ -6,14 +6,20 @@ const StyledFooter = (props) => {
   const useStyles = makeStyles(theme => ({
     root: {
       padding: '15px',
-      background: '#5c8fc7',
+      background: '#5b7087',
       color: '#f5f5f5',
+      position: 'fixed',
+      bottom: 0,
+      left: 0,
+      width: '-webkit-fill-available',
+      marginBottom: '0px',
+      boxShadow: 'inset 0px 4px 4px #434d59',
     },
   }));
 
   const classes = useStyles();
 
-  return(<div className={classes.root}>Rainey Electronics - Lights Control</div>);
+  return(<div className={classes.root}>Rainey Electronics - Scheduling</div>);
 
 }
 

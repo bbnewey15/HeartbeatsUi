@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles, Paper, Button } from '@material-ui/core';
 
 
-export default function ConfirmYesNo({onYes, onClose, customMessage}){
+export default function TaskModal({onYes, onClose, customMessage}){
     const classes = useStyles();
 
     return(
@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
     },
     yesButton:{
         color: '#fff',
-        backgroundColor: '#0968cf',
+        backgroundColor: '#414d5a',
         margin: '5px 20px',
     }
 }));

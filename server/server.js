@@ -7,22 +7,25 @@ const expressValidator = require('express-validator');
 const http = require("http");
 const favicon = require('serve-favicon');
 const cors = require('cors');
+const { parse } = require('url')
 const dotenv = require('dotenv');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 
-const {setupIo, setupTCP} = require('./sockets'); 
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
+const auth = require('./google');
+
+const {setupIo, setupTCP} = require('./sockets');
 
 dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
-//Create and maintain socket connections..
-const HOST = '10.0.0.109'; //for c++ socket
-const SOCKET_PORT = 8081; //for c++ socket
-
 //Handle Database
 const database = require('./lib/db');
 
+const HOST = '10.0.0.109'; //for c++ socket
+const SOCKET_PORT = 8081; //for c++ socket
 //Handles both socketio and c++ sockets
 setupIo(server, HOST, SOCKET_PORT);
 setupTCP(HOST,SOCKET_PORT,database);
@@ -33,59 +36,97 @@ const nextApp = next({ dev });
 const handle = nextApp.getRequestHandler();
 
 //var machines = require('./api/machines/machines');
-const switch_route = require('./lib/switch.js');
-const light_route = require('./lib/light.js');
+
+
+const songs = require('./lib/songs.js');
+const {emailRouter} = require('./lib/email');
+
 
 global.SERVER_APP_ROOT = __dirname;
-
+global.ROOT_URL = process.env.NODE_ENV == 'production' ? "http://heartbeats.com:8000" : "http://heartbeats.com:8000";
 nextApp
   .prepare()
   .then(() => {
+
 
     app.use(favicon(__dirname + '/../public/static/favicon.ico'));
     app.use(expressValidator());
     app.use(bodyParser.json({limit: '50mb'}));
 
-    //app.use('/api/machines', machines);
-    
+    // The next two gets allow normal handle of regular static/next assets
+    //   that do not need google auth. This needs to be before passport.session
+    app.get('/_next*', (req, res) => {
+      handle(req, res);
+    });
+
+    app.get('/static/*', (req, res) => {
+      handle(req, res);
+    });
+    ////////////////
+
     app.use(cors({ origin: '*' }));
+    //Custom Routes//
+    app.use('songs', songs);
+    
+    ///
 
-    app.use('/switch', switch_route);
-    app.use('/light', light_route);
-
-    //This is how we can send variables like settings from mysql to nextjs
-    // var settings = require('./settings.js');
-    // app.get('/', (req, res) => {
-
-    //   settings.doGetAll(nextApp, database,req,res);
-      
-    //   //settings.handleRequest(nextApp, database, req, res);
-    // });
-
-    // app.get('/api/history', async (req,res) => {
-    //   const sql = 'Select * from air_dryer ORDER BY read_date DESC';
-    //   try{
-    //     const results = await database.query(sql, []);
-    //     logger.info("Got History");
-    //     res.json(results);
-    //   }
-    //   catch(error){
-    //     logger.error("History: " + err);
-    //     res.send("");
-    //   }
-    // });
+    //Session   ////
+    //Has to be above custom routes, otherwise req.session is not available to them
+    var options = {
+      host: process.env.host,
+      port: 3306,
+      user: process.env.user,
+      password: process.env.password,
+      database: process.env.database,
+      expiration: (14 * 24 * 60 * 60)
+    };
+    
+    var sessionStore = new MySQLStore(options);
+    //Could use existing connection like this 
+    //var sessionStore = new MySQLStore({}/* session store options */, connection);
+    
+    app.use(session({
+        name: 'scheduling.sid',
+        secret: 'HD2w.)q*VqRT4/#NK2M/,E^B)}FED5fWU!dKe[wk',
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+          httpOnly: true,
+          maxAge: 14 * 24 * 60 * 60 * 1000,
+        }, 
+        key: 'session_cookie_name',
+        store: sessionStore,
+    }));
+    /////////////////
+    // Authenticate User
+    auth({ ROOT_URL, app ,database})
+    // bouncie({ROOT_URL, app, database});
+    
+    // Custom Routes with session
+      //Place vehicles here, because we need to access session.passport.user 
+    
+    //
 
     app.get('*', (req, res) => {
-      return handle(req, res);
+      const parsedUrl = parse(req.url, true)
+      const { pathname } = parsedUrl;
+
+      if (pathname === '/sw.js' || pathname.startsWith('/workbox-')) {
+        console.log("SW or Worker");
+        const filePath = path.join(__dirname, '.next', pathname)
+        app.serveStatic(req, res, filePath)
+      } else {
+        handle(req, res, parsedUrl)
+      }
+      //return handle(req, res);
     });
 
     server.listen(PORT, err => {
       if (err) throw err;
-      logger.info(`> Ready on 10.0.0.109:${PORT}`);
+      logger.info(`> Ready on localhost:${PORT}`);
     });
 
-
-  })
+    })
   .catch(ex => {
     logger.error(ex.stack);
     process.exit(1);

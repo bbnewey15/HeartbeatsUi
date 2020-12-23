@@ -5,30 +5,41 @@ import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from "next/router";
 
 const NavButton = props => {
+  const {sizeStyle} = props;
 
   const useStyles = makeStyles(theme => ({
     a:{  
       cursor: 'pointer',    
       display: 'block',
-      padding: '15px',
+      // fontSize: 'small',
+      fontWeight: '600',
+      padding: '1%',
+      margin: '0px 0px 0px 10px',
+      minWidth: '100px',
       textDecoration: 'none',
+      textAlign: 'center',
+      fontFamily: 'sans-serif',
       color: '#FFF',
-      backgroundColor: '#0968cf',
+      // border: '1px solid #99aec5',
+      borderRadius: '2px',
+      // backgroundColor: '#9e9e9e6b',
       "&:hover, &:focus": {
-        backgroundColor: 'rgba(0, 0, 0, .18)',
+        backgroundColor: '#9e9e9e',
       },
       
     },
     hover:{},
     active:{
-      backgroundColor: '#6e90b154'
+      border: '1px solid #bdf0ff',
+      backgroundColor: '#9e9e9e',
+      textDecoration: 'underline',
     }
   }));
 
   const classes = useStyles();
 
   return (
-      <Link href={props.path}><div className={`NavButton ${
+      <Link display={{ xs: 'none', md: 'block' }} href={props.path} as={`/${props.path}`}><div className={`NavButton ${
         props.router.pathname === props.path ? "active" : ""
       }`}>
           <a className={classes.a + " " + (props.router.pathname === props.path ? classes.active : "") } >{props.label} </a></div>

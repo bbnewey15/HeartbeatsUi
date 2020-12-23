@@ -15,14 +15,13 @@ import cogoToast from 'cogo-toast';
 
 
 import Util from  '../../../js/Util';
-import { ListContext } from '../WOContainer';
+import { ListContext } from '../SongListContainer';
 
 
 const OrdersList = function(props) {
   const {user} = props;
 
-  const { workOrders, setWorkOrders, rowDateRange, setDateRowRange, 
-    currentView, setCurrentView, views, detailWOid,setDetailWOid} = useContext(ListContext);
+  const { songs, setSongs, setSongsRefetch, currentView, setCurrentView, views} = useContext(ListContext);
   const classes = useStyles();
 
   const [page, setPage] = React.useState(0);
@@ -30,70 +29,30 @@ const OrdersList = function(props) {
 
 
 
-  useEffect(()=>{
-    setPage(0);
-  },[workOrders])
+  
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  // const handleShowDetailView = (wo_id) =>{
+  //   if(!wo_id){
+  //     cogoToast.error("Failed to get work order");
+  //     console.error("Bad id");
+  //     return;
+  //   }
+  //   setCurrentView(views && views.filter((view, i)=> view.value == "woDetail")[0]);
+  //   setDetailWOid(wo_id);
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
-  //Save and/or Fetch rowsPerPage to local storage
-  useEffect(() => {
-    if(rowsPerPage == null){
-      var tmp = window.localStorage.getItem('rowsPerPage');
-      var tmpParsed;
-      if(tmp){
-        tmpParsed = JSON.parse(tmp);
-      }
-      if(!isNaN(tmpParsed) && tmpParsed != null){
-        setRowsPerPage(tmpParsed);
-      }else{
-        setRowsPerPage(25);
-      }
-    }
-    if(!isNaN(rowsPerPage) && rowsPerPage != null){
-      window.localStorage.setItem('rowsPerPage', JSON.stringify(rowsPerPage));
-    }
-    
-  }, [rowsPerPage]);
-
-  const handleShowDetailView = (wo_id) =>{
-    if(!wo_id){
-      cogoToast.error("Failed to get work order");
-      console.error("Bad id");
-      return;
-    }
-    setCurrentView(views && views.filter((view, i)=> view.value == "woDetail")[0]);
-    setDetailWOid(wo_id);
-
-  }
+  // }
   
   const columns = [
-    { id: 'wo_record_id', label: 'WO#', minWidth: 20, align: 'center',
-      format: (value)=> <span onClick={()=>handleShowDetailView(value)} className={classes.clickableWOnumber}>{value}</span> },
-    { id: 'date', label: 'Date', minWidth: 80, align: 'center' },
+    { id: 'id', label: 'Id', minWidth: 20, align: 'center' },
     {
-      id: 'wo_type',
-      label: 'Type',
-      minWidth: 50,
-      align: 'left',
-    },
-    {
-      id: 'c_name',
-      label: 'Product Goes To',
+      id: 'name',
+      label: 'Name',
       minWidth: 250,
       align: 'left',
     },
-    { id: 'sa_city', label: 'City', minWidth: 45, align: 'left' },
-    { id: 'sa_state', label: 'State', minWidth: 35, align: 'left' },
     { id: 'description', label: 'Description', minWidth: 400, align: 'left' },
-    { id: 'a_name', label: 'Bill Goes To', minWidth: 250, align: 'left' },
+    { id: 'initial_bpm', label: 'BPM', minWidth: 90, align: 'center' },
+    { id: 'date_created', label: 'Date Created', minWidth: 90, align: 'center' },
   ];
 
   const StyledTableRow = withStyles((theme) => ({
@@ -137,7 +96,7 @@ const OrdersList = function(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {workOrders && workOrders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+            {songs && songs.map((row) => {
               return (
                 <StyledTableRow hover role="checkbox" tabIndex={-1} key={row.code} >
                   {columns.map((column) => {
@@ -147,7 +106,7 @@ const OrdersList = function(props) {
                                 key={column.id}
                                  align={column.align}
                                  style={{ minWidth: column.minWidth }}>
-                        {column.format && typeof value === 'number' ? column.format(value) : value}
+                        {column.format ? column.format(value, row) : value}
                       </TableCell>
                     );
                   })}
@@ -157,15 +116,7 @@ const OrdersList = function(props) {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[25, 50, 100]}
-        component="div"
-        count={workOrders ? workOrders.length : 0}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
+    
     </div>
   );
 }

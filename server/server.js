@@ -39,7 +39,7 @@ const handle = nextApp.getRequestHandler();
 
 
 const songs = require('./lib/songs.js');
-const {emailRouter} = require('./lib/email');
+//const {emailRouter} = require('./lib/email');
 
 
 global.SERVER_APP_ROOT = __dirname;

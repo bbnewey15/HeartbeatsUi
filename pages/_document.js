@@ -11,8 +11,8 @@ class MyDocument extends Document {
       <html lang="en" dir="ltr">
         <Head>
           <meta charSet="utf-8" />
-          <meta name='description' content='Scheduling App for Rainey Electronics Inc' />
-          <meta name='keywords' content='Scheduling rainey electronics' />
+          <meta name='description' content='HeartBeats app by Ben Newey' />
+          <meta name='keywords' content='HeartBeats app by Ben Newey' />
           {/* PWA primary color */}
           <meta
             name="theme-color"
@@ -24,10 +24,10 @@ class MyDocument extends Document {
 
           <meta name="mobile-web-app-capable" content="yes"/>
           <meta name="apple-mobile-web-app-capable" content="yes"/>
-          <meta name="application-name" content="Scheduling"/>
-          <meta name="apple-mobile-web-app-title" content="Scheduling"/>
-          <meta name="theme-color" content="#5b7087"/>
-          <meta name="msapplication-navbutton-color" content="#5b7087"/>
+          <meta name="application-name" content="Heartbeats"/>
+          <meta name="apple-mobile-web-app-title" content="Heartbeats"/>
+          <meta name="theme-color" content="#f16616"/>
+          <meta name="msapplication-navbutton-color" content="#f16616"/>
           <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
           <meta name="msapplication-starturl" content="/"/>
           <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>

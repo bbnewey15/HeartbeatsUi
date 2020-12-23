@@ -9,7 +9,7 @@ import Slide from '@material-ui/core/Slide';
 import cogoToast from 'cogo-toast';
 
 import Util from  '../../../js/Util';
-import Work_Orders from  '../../../js/Work_Orders';
+import Songs from  '../../../js/Songs';
 import { ListContext } from '../SongListContainer';
 
 
@@ -22,32 +22,18 @@ const OrdersToolbar = function(props) {
   const {user} = props;
 
   
-  const { workOrders, setWorkOrders, rowDateRange, setDateRowRange,
-    currentView, setCurrentView, views, detailWOid,setDetailWOid, activeWorkOrder} = useContext(ListContext);
+  const { songs, setSongs, setSongsRefetch, currentView, setCurrentView, views} = useContext(ListContext);
 
-  const backMode = currentView && currentView.value != "allWorkOrders";
+  const backMode = currentView && currentView.value != "allSongs";
 
   const classes = useStyles({backMode});
   
   
   const toolBarMainGrid = () =>{
     switch(currentView.value){
-      case "allWorkOrders":
-        return <Search />
+      case "allSongs":
+        return (<></>)
         break
-      case "search":
-        return <Search />
-        break;
-      case "woItems":
-      case "woPdf":
-      case "pastWO":  
-      case "woFPOrder":
-      case "packingSlip":
-      case "woDetail":
-        return (<Grid item className={classes.woDetailToolbarDiv} xs={ 5}>
-                  <span className={classes.woLabelSpan}>WO#:{detailWOid}</span><span className={classes.woLabelSpan}>{activeWorkOrder && activeWorkOrder.c_name}</span>
-                </Grid>);
-        break;
       default: 
         cogoToast.error("Bad view");
         return <></>;
@@ -87,7 +73,7 @@ const OrdersToolbar = function(props) {
     //Default
     return(
       <Grid item xs={2} className={classes.toolbarLeftGridPlain}>
-            <img src="/static/rainey_elec.png" height='30'/>
+            {/* <img src="/static/rainey_elec.png" height='30'/> */}
             <span className={classes.toolbarLeftGridHeadSpan}>{currentView.displayName}</span>
       </Grid>
     );

@@ -4,7 +4,7 @@
     "lang": "en-US",
     "start_url": "/",
     "display": "browser",
-    "theme_color": "#5b7087",
+    "theme_color": "#f16616",
     "icons": [
       {
         "src": "/static/favicon.ico",

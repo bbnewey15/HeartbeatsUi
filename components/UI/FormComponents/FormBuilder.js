@@ -24,10 +24,8 @@ import {
 
 import Util from '../../../js/Util.js';
 
-import Settings from  '../../../js/Settings';
-import Work_Orders from  '../../../js/Work_Orders';
-import { ListContext } from '../../../components/WorkOrders/WOContainer';
-import { DetailContext } from '../../../components/WorkOrders/WOContainer';
+import Songs from  '../../../js/Songs';
+import { ListContext } from '../../../components/SongList/SongListContainer';
 
 const FormBuilder = forwardRef((props, ref) => {
     const { fields, //table of each input field

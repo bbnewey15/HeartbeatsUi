@@ -14,8 +14,7 @@ import cogoToast from 'cogo-toast';
 
 import Util from  '../../../js/Util';
 import Work_Orders from  '../../../js/Work_Orders';
-import { ListContext } from '../WOContainer';
-import { DetailContext } from '../WOContainer';
+import { ListContext } from '../SonglistContainer';
 
 import AddEditWOIModal from '../AddEditWOI/AddEditWOIModal';
 

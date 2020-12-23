@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import Wrapper from '../Scheduler/Wrapper'
+import Wrapper from '../UI/Wrapper'
 import Nav from '../Nav';
 import StyledFooter from '../Footer'
 import navButtons from "../../config/buttons";

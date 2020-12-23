@@ -5,7 +5,7 @@ import AddIcon from '@material-ui/icons/Add';
 import cogoToast from 'cogo-toast';
 
 import Util from  '../../../js/Util';
-import { ListContext } from '../WOContainer';
+import { ListContext } from '../SongListContainer';
 
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -14,10 +14,8 @@ import {
     DateTimePicker,
     MuiPickersUtilsProvider,
   } from '@material-ui/pickers';
-import RecentWO from './components/RecentWO';
-import FilterCompInv from './components/FilterCompInv';
 
-const WOSidebarList = function(props) {
+const SongSidebarList = function(props) {
   const {user} = props;
 
 
@@ -28,20 +26,8 @@ const WOSidebarList = function(props) {
   const classes = useStyles();
  
   
-  const changeDateRange = (to, from) =>{
-    setDateRowRange({
-      to: to ? new Date(to) : rowDateRange.to,
-      from: from ? new Date(from) : rowDateRange.from
-    })
-    setWorkOrders(null);
-  }
 
-  const searchOpen = currentView && currentView.value == "search";
 
-  const handleOpenAddWOModal = () =>{
-    setEditModalMode("add");
-    setEditWOModalOpen(true);
-  }
   
   return (
     <div className={classes.root}>
@@ -49,65 +35,17 @@ const WOSidebarList = function(props) {
             <Button className={classes.newButton} 
                     classes={{label: classes.newButtonLabel}} 
                     variant="outlined"
-                    onClick={event=> handleOpenAddWOModal()}>
+                    >
               <AddIcon className={classes.plusIcon}/>
-              <div>New Order</div>
+              <div>New</div>
             </Button>
         </div>
-        <div className={classes.dateRangeDiv}>
-        { !searchOpen && <div>
-            <div className={classes.labelDiv}><span className={classes.dateRangeSpan}>Date Range</span></div>
-            <div className={classes.inputDiv}>
-              <span className={classes.inputSpan}>FROM:</span>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <DatePicker    format="MM/dd/yyyy"
-                                  clearable
-                                  showTodayButton
-                                  inputVariant="outlined"
-                                  variant="modal" 
-                                  maxDate={new Date('01-01-2100')}
-                                  minDate={new Date('01-01-1970')}
-                                  className={classes.inputField}
-                                  value={rowDateRange.from} 
-                                  onChange={value => changeDateRange(null, value)} />
-              </MuiPickersUtilsProvider>
-            </div>
-            <div className={classes.inputDiv}>
-              <span className={classes.inputSpan}>TO:</span>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <DatePicker    format="MM/dd/yyyy"
-                                clearable
-                                showTodayButton
-                                inputVariant="outlined"
-                                variant="modal" 
-                                maxDate={new Date('01-01-2100')}
-                                  minDate={new Date('01-01-1970')}
-                                className={classes.inputField}
-                                value={rowDateRange.to} 
-                                onChange={value => changeDateRange(value, null)} />
-            </MuiPickersUtilsProvider>
-            </div>
-            <div className={classes.warningDiv}>
-            {workOrders && workOrders.length >= 2000 ? <span className={classes.inlineErrorText}>The data has been limited to 2000 items, please select a smaller date range</span> : <></>}
-            </div>
-
-            
-        </div>}
-          { !searchOpen && 
-            <div>
-                <FilterCompInv/>
-            </div>
-          }
-        </div>
-          <div className={classes.dateRangeDiv}>
-            
-            <RecentWO />
-          </div>
+        
     </div>
   );
 }
 
-export default WOSidebarList
+export default SongSidebarList
 
 const useStyles = makeStyles(theme => ({
     root:{

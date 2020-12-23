@@ -6,10 +6,9 @@ import EditIcon from '@material-ui/icons/Edit';
 import cogoToast from 'cogo-toast';
 
 import Util from  '../../../js/Util';
-import WorkOrderDetail from  '../../../js/WorkOrderDetail';
+import Songs from  '../../../js/Songs';
 
-import { ListContext } from '../WOContainer';
-import { DetailContext } from '../WOContainer';
+import { ListContext } from '../SongListContainer';
 
 import SidebarPages from './components/SidebarPages';
 import CompInvTool from './components/CompInvTool';
@@ -20,104 +19,19 @@ const WOSidebarDetail = function(props) {
 
 
 
-  const { workOrders,setWorkOrders, rowDateRange, setDateRowRange, setEditWOModalOpen, setEditModalMode, currentView,setCurrentView, views,
-    activeWorkOrder } = useContext(ListContext);
+  const {songs, setSongs, setSongsRefetch, currentView, setCurrentView, views  } = useContext(ListContext);
 
-  const {setEditWOIModalMode,setEditWOIModalOpen, setFPOrderModalOpen, setFPOrderModalMode} = useContext(DetailContext);
   
   const classes = useStyles();
   
-  const handleOpenAddWOModal = () =>{
-    setEditModalMode("edit");
-    setEditWOModalOpen(true);
-  }
 
-  const handleOpenWOIModal = () =>{
-    setEditWOIModalMode("add")
-    setEditWOIModalOpen(true);
-  }
-
-  const handleOpenFPOrderModal = () =>{
-    setFPOrderModalMode("add");
-    setFPOrderModalOpen(true);
-  }
-
-  const handleAddNewPackingSlip =()=>{
-    if(!activeWorkOrder){
-      cogoToast.error("No active work order to add packing slip to");
-      return;
-    }
-
-    WorkOrderDetail.addPackingSlip(activeWorkOrder.wo_record_id)
-    .then((data)=>{
-      setCurrentView(views.find((v)=> v.value === "packingSlip"))
-      //setPackingSlips(null);
-    })
-    .catch((error)=>{
-      cogoToast.error("Failed to add new packing slip")
-      console.error("Failed to add new packing slip", error);
-    })
-  }
 
   const sideBarTopButtons = () =>{
     switch(currentView.value){
-      case "allWorkOrders":
+      case "allSongs":
         return <Search />
         break
-      case "search":
-        return <Search />
-        break;
-      case "woPdf":
-        break;
-      case "pastWO":  
-        break;
-      case "woFPOrder":
-        return(
-          <div className={classes.newButtonDiv} >
-            <Button className={classes.newButton} classes={{label: classes.newButtonLabel}} variant="outlined"
-                onClick={()=> handleOpenFPOrderModal()}>
-                <AddIcon className={classes.plusIcon}/>
-                <div>New Order</div>
-            </Button>
-          </div>
-        )
-        break;
-      case "woDetail":
-        return (<>
-          <div className={classes.newButtonDiv} >
-              <Button className={classes.newButton} 
-                    classes={{label: classes.newButtonLabel}} 
-                    variant="outlined"
-                    onClick={event=> handleOpenAddWOModal()}>
-                      <EditIcon className={classes.editIcon}/><div>Edit Info</div>
-              </Button>
-          </div></>);
-        break;
-      case "woItems":
-        return (<>
-          <div className={classes.newButtonDiv} >
-            <Button className={classes.newButton} 
-                    classes={{label: classes.newButtonLabel}} 
-                    variant="outlined"
-                    onClick={event => handleOpenWOIModal()}
-                    >
-              <AddIcon className={classes.plusIcon}/>
-              <div>New Item</div>
-            </Button>
-          </div></>);
-          break;
-      case "packingSlip":
-        return (<>
-        <div className={classes.newButtonDiv} >
-          <Button className={classes.newButton} 
-                  classes={{label: classes.newButtonLabel}} 
-                  variant="outlined"
-                  onClick={event=> handleAddNewPackingSlip()}>
-            <AddIcon className={classes.plusIcon}/>
-            <div>New Packing Slip</div>
-          </Button>
-        </div></>);
-        break;
+
       default: 
         cogoToast.error("Bad view");
         return <></>;

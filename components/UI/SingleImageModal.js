@@ -96,7 +96,7 @@ const useStyles = makeStyles(theme => ({
         textAlign: 'center',
     },
     modalTitleDiv:{
-        backgroundColor: '#5b7087',
+        backgroundColor: '#f16616',
         padding: '5px 0px 5px 0px',
         width: '100%',
     },

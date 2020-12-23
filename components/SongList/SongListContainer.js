@@ -5,20 +5,17 @@ import {makeStyles, CircularProgress, Grid} from '@material-ui/core';
 import cogoToast from 'cogo-toast';
 
 import Util from '../../js/Util';
-import Settings from '../../js/Settings';
-import Work_Orders from  '../../js/Work_Orders';
-import WorkOrderDetail from  '../../js/WorkOrderDetail';
+import Songs from  '../../js/Songs';
 
 import SongListToolbar from './Toolbar/SongListToolbar';
 //Sidebars
-import WOSidebarList from './Sidebars/SongSidebarList';
-import WOSidebarDetail from './Sidebars/SongSidebarDetail';
+import SongSidebarList from './Sidebars/SongSidebarList';
+//import SongSidebarDetail from './Sidebars/SongSidebarDetail';
 
 //Main Panels
 import SongList from './MainPanels/SongList';
 
 //Extras
-import AddEditModal from './AddEditWorkOrder/AddEditModal'
 
 
 
@@ -29,7 +26,7 @@ export const DetailContext = createContext(null);
 
 //This is the highest component for the Task Page
 //Contains all important props that all tabs use
-const WOContainer = function(props) {
+const SongListContainer = function(props) {
   const {user} = props;
 
   const [songs, setSongs] = useState(null);
@@ -38,7 +35,7 @@ const WOContainer = function(props) {
 
   //views used through whole app, 
   //child views with parent run parent's onClose() function
-  const views = [ { value: "allWorkOrders", displayName: "Work Orders", /*onClose: ()=> {setSongs(null)}*/ },
+  const views = [ { value: "allSongs", displayName: "List View", /*onClose: ()=> {setSongs(null)}*/ },
                   ];
 
   const [currentView,setCurrentView] = useState(null);
@@ -69,32 +66,32 @@ const WOContainer = function(props) {
   }, [currentView]);
 
   
-  //OrderRows
-  useEffect( () =>{
-    //Gets data only on initial component mount or when rows is set to null
-    if(songs == null || songsRefetch) {
-      if(songsRefetch){
-        setSongsRefetch(false);
-      }
+  // //OrderRows
+  // useEffect( () =>{
+  //   //Gets data only on initial component mount or when rows is set to null
+  //   if(songs == null || songsRefetch) {
+  //     if(songsRefetch){
+  //       setSongsRefetch(false);
+  //     }
 
-      Songs.getAllSongs()
-      .then( data => { 
-        setSongs(data);
-      })
-      .catch( error => {
-        console.warn(error);
-        cogoToast.error(`Error getting tasks`, {hideAfter: 4});
-      })
-    }
+  //     Songs.getAllSongs()
+  //     .then( data => { 
+  //       setSongs(data);
+  //     })
+  //     .catch( error => {
+  //       console.warn(error);
+  //       cogoToast.error(`Error getting tasks`, {hideAfter: 4});
+  //     })
+  //   }
 
-  },[songs, songsRefetch]);
+  // },[songs, songsRefetch]);
 
 
     
 
   const getMainComponent = () =>{
     switch(currentView.value){
-      case "allWorkOrders":
+      case "allSongs":
         return <SongList />
         break;
       default: 
@@ -106,12 +103,12 @@ const WOContainer = function(props) {
 
   const getSidebarComponent = () =>{
     switch(currentView.value){
-      case "allWorkOrders":
-        return <WOSidebarList />
+      case "allSongs":
+        return <SongSidebarList />
         break
       default: 
         cogoToast.error("Bad view");
-        return <WOSidebarList />;
+        return <SongSidebarList />;
         break;
     }
   }
@@ -151,7 +148,7 @@ const WOContainer = function(props) {
   );
 }
 
-export default WOContainer
+export default SongListContainer
 
 const useStyles = makeStyles(theme => ({
   root:{

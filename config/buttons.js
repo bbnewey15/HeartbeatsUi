@@ -5,6 +5,10 @@ const navButtons = [
         label: "Song List",
         path: ""
     },
+    {
+        label: "Player",
+        path: "/player"
+    },
     
 ];
 

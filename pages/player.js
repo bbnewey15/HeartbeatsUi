@@ -5,7 +5,7 @@ import MainLayout from '../components/Layouts/Main';
 import withAuth from '../server/lib/withAuth';
 import ReconnectSnack from '../components/UI/ReconnectSnack';
 
-import SongListContainer from '../components/SongList/SongListContainer';
+import PlayerContainer from '../components/Player/PlayerContainer';
 
 import socketIOClient from 'socket.io-client';
 import getConfig from 'next/config';
@@ -13,7 +13,7 @@ const {publicRuntimeConfig} = getConfig();
 const {ENDPOINT_PORT, ENDPOINT_HOST} = publicRuntimeConfig;
 const endpoint =  ENDPOINT_HOST+ ":" + ENDPOINT_PORT;
 
-const Signs = function (props) {
+const Player = function (props) {
     
     const [recievedBPM, setRecievedBPM] = useState(null);
     const [socket, setSocket] = useState(null);
@@ -43,7 +43,7 @@ const Signs = function (props) {
     return (
         <MainLayout>
               <ReconnectSnack recievedBPM={recievedBPM} socket={socket} />
-              <SongListContainer user={user} recievedBPM={recievedBPM}/>
+              <PlayerContainer user={user} recievedBPM={recievedBPM}/>
         </MainLayout>
     );
 }
@@ -57,8 +57,8 @@ const Signs = function (props) {
 //   }),
 // };
 
-Signs.defaultProps = {
+Player.defaultProps = {
   settings: null,
 };
 
-export default withAuth(Signs);
+export default withAuth(Player);

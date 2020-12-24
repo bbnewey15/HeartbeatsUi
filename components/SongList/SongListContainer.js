@@ -67,24 +67,24 @@ const SongListContainer = function(props) {
 
   
   // //OrderRows
-  // useEffect( () =>{
-  //   //Gets data only on initial component mount or when rows is set to null
-  //   if(songs == null || songsRefetch) {
-  //     if(songsRefetch){
-  //       setSongsRefetch(false);
-  //     }
+  useEffect( () =>{
+    //Gets data only on initial component mount or when rows is set to null
+    if(songs == null || songsRefetch) {
+      if(songsRefetch){
+        setSongsRefetch(false);
+      }
 
-  //     Songs.getAllSongs()
-  //     .then( data => { 
-  //       setSongs(data);
-  //     })
-  //     .catch( error => {
-  //       console.warn(error);
-  //       cogoToast.error(`Error getting tasks`, {hideAfter: 4});
-  //     })
-  //   }
+      Songs.getAllSongs()
+      .then( data => { 
+        setSongs(data);
+      })
+      .catch( error => {
+        console.warn(error);
+        cogoToast.error(`Error getting tasks`, {hideAfter: 4});
+      })
+    }
 
-  // },[songs, songsRefetch]);
+  },[songs, songsRefetch]);
 
 
     

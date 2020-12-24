@@ -66,7 +66,7 @@ nextApp
 
     app.use(cors({ origin: '*' }));
     //Custom Routes//
-    app.use('songs', songs);
+    app.use('/songs', songs);
     
     ///
 
